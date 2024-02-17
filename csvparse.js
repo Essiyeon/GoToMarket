@@ -29,7 +29,7 @@ async function main() {
 
         const geocodedAddresses = [];
         for (const row of parsedData.data) {
-            const address = row['address'];
+            const address = row['oldaddress'];
             if (address) {
                 const geocodedAddress = await geocode(address);
                 if (geocodedAddress) {

@@ -8,54 +8,51 @@ const port = process.env.PORT || 80;
 
 app.use(express.static("public_html"));
 
-// CSV 파일 경로
-const csvFilePath = "C:\\marketWeb\\GoToMarket\\allmarket.csv";
+async function geocode(address) {
+    try {
+        const response = await axios.get('https://naveropenapi.apigw.ntruss.com/map-geocode/v2/geocode', {
+            params: {
+                query: address,
+            },
+            headers: {
+                'X-NCP-APIGW-API-KEY-ID': 't75lm1s2nf',
+                'X-NCP-APIGW-API-KEY': 'xwfn5VmFcTAlPU5lO9wG2aMsXwcQD0vDG4QJtdog',
+            },
+        });
+        
+        const geocodedAddress = { address, x: response.data.addresses[0].x, y: response.data.addresses[0].y };
+        console.log("주소:", address, "좌표로 변경됨:", geocodedAddress);
+        return geocodedAddress;
+    } catch (error) {
+        console.error('Geocode 요청 중 에러 발생:', error);
+        return null;
+    }
+}
 
-// CSV 파일을 읽어와서 주소를 좌표로 변환하고 지도에 마커 표시
 app.get("/loadData", async (req, res) => {
     try {
-      const data = fs.readFileSync(csvFilePath, "utf8");
-      const results = Papa.parse(data, { header: true });
-  
-      const markers = [];
-  
-      for (const row of results.data) {
-        const address = row["address"];
-        if (address) {
-          const geocodeResponse = await axios.get(
-            "https://naveropenapi.apigw.ntruss.com/map-geocode/v2/geocode",
-            {
-              params: {
-                query: address,
-                coordinate: "37.5666805, 126.9784147",
-              },
-              headers: {
-                "X-NCP-APIGW-API-KEY-ID": "t75lm1s2nf",
-                "X-NCP-APIGW-API-KEY": "xwfn5VmFcTAlPU5lO9wG2aMsXwcQD0vDG4QJtdog",
-              },
-            }
-          );
-  
-        
-          const coords = geocodeResponse.data.addresses[0];
-            if (coords) {
-                const lat = coords.x; // 위도
-                const lng = coords.y; // 경도
-                markers.push({ address, latlng: { x: lng, y: lat } });
-            } else {
-                console.error(`주소 ${address}에 대한 좌표 정보를 찾을 수 없습니다.`);
-            }
+        const csvFilePath = 'C:\\marketWeb\\GoToMarket\\somemarkets.csv';
+        const csvData = fs.readFileSync(csvFilePath, 'utf8');
+        const parsedData = Papa.parse(csvData, { header: true });
 
+        const geocodedAddresses = [];
+        for (const row of parsedData.data) {
+            const address = row['oldaddress'];
+            if (address) {
+                const geocodedAddress = await geocode(address);
+                if (geocodedAddress) {
+                    geocodedAddresses.push(geocodedAddress);
+                }
+            }
         }
-      }
-  
-      res.json(markers);
+
+        res.json(geocodedAddresses); // 좌표 정보를 JSON 형태로 반환
     } catch (error) {
-      console.error("마커 정보를 불러오는 중 에러 발생:", error);
-      res.status(500).send("Internal Server Error");
+        console.error('마커 정보를 불러오는 중 에러 발생:', error);
+        res.status(500).send("Internal Server Error");
     }
 });
-  
+
 app.listen(port, function() {
     console.log("HTML 서버시작됨");
 });
