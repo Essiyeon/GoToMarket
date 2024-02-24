@@ -31,7 +31,7 @@ async function geocode(address) {
 
 app.get("/loadData", async (req, res) => {
     try {
-        const csvFilePath = 'C:\\marketWeb\\GoToMarket\\somemarkets.csv';
+        const csvFilePath = 'C:\\marketWeb\\GoToMarket\\littlemarket.csv';
         const csvData = fs.readFileSync(csvFilePath, 'utf8');
         const parsedData = Papa.parse(csvData, { header: true });
 
