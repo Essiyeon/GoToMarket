@@ -39,11 +39,13 @@ app.get("/loadData", async (req, res) => {
         for (const row of parsedData.data) {
             const address = row['oldaddress'];
             const name = row['name']; // 추가 필드 가져오기
-            const kind = row['kind']; // 추가 필드 가져오기
+            const kind = row['kind']; 
+            const restroom = row['restroom'];
+            const parking = row['parking']
             if (address) {
                 const geocodedAddress = await geocode(address);
                 if (geocodedAddress) {
-                    const combinedData = { ...geocodedAddress, name, kind};
+                    const combinedData = { ...geocodedAddress, name, kind, restroom, parking};
                     geocodedAddresses.push(combinedData);
                     console.log("추가 데이터:", combinedData);
                 }

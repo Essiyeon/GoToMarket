@@ -26,12 +26,12 @@
         
         var infowindow = new naver.maps.InfoWindow({
             maxWidth: 300,
-            backgroundColor: "#eee",
-            borderColor: "#2db400",
-            borderWidth: 5,
+            backgroundColor: "#FCFBE8",
+            borderColor: "#DBD9C9",
+            borderWidth: 3,
             anchorSize: new naver.maps.Size(30, 30),
             anchorSkew: true,
-            anchorColor: "#eee",
+            anchorColor: "#FCFBE8",
             pixelOffset: new naver.maps.Point(20, -20)
         });
 
@@ -93,14 +93,36 @@
                 naver.maps.Event.addListener(newMarker, "click", function(e) {
                     var contentString = '<div style="padding:10px;">' +
                                         '<h3>' + marker.name + '</h3>' +
-                                        '<p>Address: ' + marker.address + '</p>' +
-                                        '<p>Kind: ' + marker.kind + '</p>' +
+                                        '<p>주소: ' + marker.address + '</p>' +
+                                        '<p>시장유형: ' + marker.kind + '</p>' +
+                                        '<p>화장실 유무: ' + marker.restroom + '</p>' +
+                                        '<p>주차장 유무: ' + marker.parking + '</p>' +
                                         '</div>';
                     infowindow.setContent(contentString);
                     infowindow.open(map, newMarker);
+
+                    // 정보창이 열렸을 때 선택된 마커 이미지 변경
+                    newMarker.setIcon({
+                        url: 'selection.png', // 변경된 이미지 경로
+                        size: new naver.maps.Size(45, 50),
+                        scaledSize: new naver.maps.Size(45, 50),
+                        anchor: new naver.maps.Point(15, 15)
+                    });
+                });
+
+                // 정보창이 닫힐 때 선택된 마커 이미지를 다시 원래대로 변경
+                naver.maps.Event.addListener(infowindow, 'close', function() {
+                    newMarker.setIcon({
+                        url: 'market.png', // 초기 이미지 경로
+                        size: new naver.maps.Size(45, 50),
+                        scaledSize: new naver.maps.Size(45, 50),
+                        anchor: new naver.maps.Point(15, 15)
+                    });
+                });
+
                 });
             });
-        });
+        
         naver.maps.Event.addListener(map, "click", function(e) {
             infowindow.close();
         });
