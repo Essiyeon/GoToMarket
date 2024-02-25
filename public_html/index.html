@@ -2,7 +2,7 @@
 <head>
     <script type="text/javascript" src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=t75lm1s2nf&amp;submodules=geocoder"></script>
     <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
-        <center><img class="roof" src="./LogoRoof.png" alt="GoToMarketROOF"  width="300", height="180"></center>
+        <center><img class="logo" src="./LogoRoof.png" alt="GoToMarketROOF"  width="300", height="180"></center>
 
 </head>
 <body bgcolor="#FCFBE8">
@@ -38,13 +38,19 @@
         function onSuccessGeolocation(position) {
             var location = new naver.maps.LatLng(position.coords.latitude,
                 position.coords.longitude);
-
+            var myLocationMarker = new naver.maps.Marker({
+                position: location,
+                map: map,
+                icon: {
+                    url: 'mylocation.png',
+                    size: new naver.maps.Size(40,60),
+                    scaledSize: new naver.maps.Size(40,60),
+                    anchor: new naver.maps.Point(15,15)
+                }
+            });
             map.setCenter(location); // 얻은 좌표를 지도의 중심으로 설정합니다.
             map.setZoom(12); // 지도의 줌 레벨을 변경합니다.
-        
-            infowindow.setContent('<div style="padding:20px;">' + '현재 위치' + '</div>');
 
-            infowindow.open(map, location);
             console.log('Coordinates: ' + location.toString());
         }
 
@@ -74,6 +80,12 @@
                 var markerOptions = {
                     position: markerPosition,
                     map: map,
+                    icon: {
+                    url: 'market.png',
+                    size: new naver.maps.Size(45,50),
+                    scaledSize: new naver.maps.Size(45,50),
+                    anchor: new naver.maps.Point(15,15)
+                    }
                 }
                 var newMarker = new naver.maps.Marker(markerOptions);
 
@@ -88,6 +100,9 @@
                     infowindow.open(map, newMarker);
                 });
             });
+        });
+        naver.maps.Event.addListener(map, "click", function(e) {
+            infowindow.close();
         });
 
     });
