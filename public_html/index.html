@@ -3,13 +3,14 @@
     <script type="text/javascript" src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=t75lm1s2nf&amp;submodules=geocoder"></script>
     <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
         <center><img class="logo" src="./LogoRoof.png" alt="GoToMarketROOF"  width="300", height="180"></center>
-
+        <link rel="stylesheet" href="index.css"> <!-- CSS 파일 링크 -->
 </head>
 <body bgcolor="#FCFBE8">
-<div style="margin-top: 20px; margin-bottom: 10px; font-weight: bold;">
-
-</div>
+<div style="margin-top: 20px; margin-bottom: 10px; font-weight: bold;"></div>
 <div id ="map" style="width:100%; height:70%"></div>
+
+<input id="FoodName" placeholder="품목을 입력하세요.." type="text">
+    <button id="search">검색</button>
 </body>
 <script>
     $(document).ready(function(){
@@ -95,8 +96,8 @@
                                         '<h3>' + marker.name + '</h3>' +
                                         '<p>주소: ' + marker.address + '</p>' +
                                         '<p>시장유형: ' + marker.kind + '</p>' +
-                                        '<p>화장실 유무: ' + marker.restroom + '</p>' +
-                                        '<p>주차장 유무: ' + marker.parking + '</p>' +
+                                        '<p>화장실 보유여부: ' + marker.restroom + '</p>' +
+                                        '<p>주차장 보유여부: ' + marker.parking + '</p>' +
                                         '</div>';
                     infowindow.setContent(contentString);
                     infowindow.open(map, newMarker);
