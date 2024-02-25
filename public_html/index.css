@@ -1,22 +1,22 @@
 #map {
-    margin-top: 20px; /* 맵 위쪽에 20px의 간격을 띄웁니다 */
-    margin-bottom: 20px; /* 맵 아래쪽에 20px의 간격을 띄웁니다 */
+    margin-top: 20px; 
+    margin-bottom: 20px; 
 }
 
 #FoodName {
-    width: calc(100% - 120px); /* 검색 버튼을 고려하여 검색창의 너비를 조정합니다 */
+    width: calc(100% - 120px);
     height: 40px;
     text-align: center;
     margin: 0 auto;
     display: block;
-    float: left; /* 검색창이 왼쪽으로 플로팅되도록 설정합니다 */
-    margin-bottom: 20px; /* 검색창 아래쪽에 20px의 간격을 띄웁니다 */
+    float: left; 
+    margin-bottom: 20px; 
 }
 
 #search {
     width: 110px;
     height: 40px;
-    float: left; /* 검색 버튼이 왼쪽으로 플로팅되도록 설정합니다 */
-    margin-left: 10px; /* 검색 버튼과의 간격을 조정합니다 */
-    margin-bottom: 20px; /* 검색 버튼 아래쪽에 20px의 간격을 띄웁니다 */
+    float: left; 
+    margin-left: 10px; 
+    margin-bottom: 20px; 
 }
