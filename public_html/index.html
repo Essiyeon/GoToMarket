@@ -23,7 +23,17 @@
             },
             mapTypeId: naver.maps.MapTypeId.NORMAL
         });
-        var infowindow = new naver.maps.InfoWindow();
+        
+        var infowindow = new naver.maps.InfoWindow({
+            maxWidth: 300,
+            backgroundColor: "#eee",
+            borderColor: "#2db400",
+            borderWidth: 5,
+            anchorSize: new naver.maps.Size(30, 30),
+            anchorSkew: true,
+            anchorColor: "#eee",
+            pixelOffset: new naver.maps.Point(20, -20)
+        });
 
         function onSuccessGeolocation(position) {
             var location = new naver.maps.LatLng(position.coords.latitude,
@@ -31,8 +41,8 @@
 
             map.setCenter(location); // 얻은 좌표를 지도의 중심으로 설정합니다.
             map.setZoom(12); // 지도의 줌 레벨을 변경합니다.
-
-            infowindow.setContent('<div style="padding:20px;">' + '나의 현재 위치' + '</div>');
+        
+            infowindow.setContent('<div style="padding:20px;">' + '현재 위치' + '</div>');
 
             infowindow.open(map, location);
             console.log('Coordinates: ' + location.toString());
@@ -66,6 +76,17 @@
                     map: map,
                 }
                 var newMarker = new naver.maps.Marker(markerOptions);
+
+                // 마커를 클릭하면 옵션 정보창을 표시
+                naver.maps.Event.addListener(newMarker, "click", function(e) {
+                    var contentString = '<div style="padding:10px;">' +
+                                        '<h3>' + marker.name + '</h3>' +
+                                        '<p>Address: ' + marker.address + '</p>' +
+                                        '<p>Kind: ' + marker.kind + '</p>' +
+                                        '</div>';
+                    infowindow.setContent(contentString);
+                    infowindow.open(map, newMarker);
+                });
             });
         });
 
